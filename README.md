@@ -30,6 +30,12 @@ Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 n
 - Chuẩn hóa thông điệp công khai theo hướng trang trọng hơn: “kết nối truyền thống MTA với dấu ấn Hải quân”.
 - Đồng bộ nội dung trên website, metadata, README và GitHub repository description.
 
+## Release 1.2 stable
+- Đồng bộ social preview, poster và các mẫu lời mời với thông điệp “kết nối truyền thống MTA với dấu ấn Hải quân”.
+- Thêm chia sẻ trực tiếp ảnh avatar bằng Web Share file khi thiết bị hỗ trợ; nếu không hỗ trợ thì tự tạo JPG để dùng.
+- Bổ sung hướng dẫn dự phòng cho trình duyệt bên trong Facebook/Zalo: mở bằng Chrome/Safari nếu thao tác lưu/chia sẻ bị giới hạn.
+- Khóa regression cho các luồng mobile/share trước khi phát hành rộng.
+
 ## Quyền riêng tư
 Ảnh cá nhân được xử lý ngay trong trình duyệt bằng Canvas; trang tĩnh không tải ảnh người dùng lên máy chủ.
 

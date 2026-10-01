@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { existsSync, readFileSync } from 'node:fs';
 
 const pageUrl = pathToFileURL(resolve('index.html')).href;
-const ogImagePath = resolve('og-image-v1.png');
+const ogImagePath = resolve('og-image-v2.png');
 const qrImagePath = resolve('share-qr-v1.png');
 const posterImagePath = resolve('share-poster-v1.png');
 
@@ -121,7 +121,8 @@ test('social metadata, share assets and invite copy are wired', async ({ page })
 
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://xuan2261.github.io/mta60-avatar-frame/');
   await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://xuan2261.github.io/mta60-avatar-frame/');
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://xuan2261.github.io/mta60-avatar-frame/og-image-v1.png');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://xuan2261.github.io/mta60-avatar-frame/og-image-v2.png');
+  await expect(page.locator('meta[property="og:image:secure_url"]')).toHaveAttribute('content', 'https://xuan2261.github.io/mta60-avatar-frame/og-image-v2.png');
   await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute('content', '1200');
   await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', '630');
   await expect(page.locator('.share-assets a[href="share-qr-v1.png"]')).toBeVisible();
@@ -139,12 +140,51 @@ test('social metadata, share assets and invite copy are wired', async ({ page })
   const invite = await page.evaluate(() => window.__invite);
   expect(invite).toContain('60 năm Học viện Kỹ thuật Quân sự');
   expect(invite).toContain('cựu học viên');
+  expect(invite).toContain('kết nối truyền thống MTA với dấu ấn Hải quân');
   expect(invite).toContain('https://xuan2261.github.io/mta60-avatar-frame/');
 
   await page.evaluate(() => { window.__invite = ''; });
   await page.locator('#shareBtn').click();
   const sharedUrl = await page.evaluate(() => window.__invite);
   expect(sharedUrl).toBe('https://xuan2261.github.io/mta60-avatar-frame/');
+});
+
+test('generated avatar shares as a JPEG file when Web Share file support is available', async ({ page }) => {
+  await openApp(page);
+  await installSyntheticPhoto(page);
+  await page.evaluate(() => {
+    window.__sharedAvatar = null;
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: data => !!data?.files?.length });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: async data => {
+      window.__sharedAvatar = {
+        title: data.title,
+        text: data.text,
+        fileName: data.files?.[0]?.name,
+        fileType: data.files?.[0]?.type,
+      };
+    }});
+  });
+  await page.locator('#shareAvatarBtn').click();
+  const shared = await page.evaluate(() => window.__sharedAvatar);
+  expect(shared).toEqual({
+    title: 'Ảnh đại diện MTA 60 năm',
+    text: 'Kết nối truyền thống MTA với dấu ấn Hải quân.',
+    fileName: 'MTA60-HaiQuan-avatar.jpg',
+    fileType: 'image/jpeg',
+  });
+});
+
+test('generated avatar falls back to a JPG download when file sharing is unavailable', async ({ page }) => {
+  await openApp(page);
+  await installSyntheticPhoto(page);
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: () => false });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: undefined });
+  });
+  const downloadPromise = page.waitForEvent('download');
+  await page.locator('#shareAvatarBtn').click();
+  const download = await downloadPromise;
+  expect(download.suggestedFilename()).toBe('MTA60-HaiQuan-avatar.jpg');
 });
 
 test('QR dialog opens, closes, and poster sharing uses a file when supported', async ({ page }) => {
@@ -194,9 +234,10 @@ test('poster source omits creator contact and internal design codes', async () =
   expect(posterSource).not.toContain('fb.com/xuan2261');
   expect(posterSource).not.toContain('0374 037 026');
   expect(posterSource).toContain('Kỷ niệm 60 năm · 1966–2026');
+  expect(posterSource).toContain('Kết nối truyền thống MTA với dấu ấn Hải quân');
 });
 
-test('public source no longer exposes internal design codes and uses the naval-audience description', async () => {
+test('public source no longer exposes internal design codes and uses the approved heritage message', async () => {
   const indexSource = readFileSync(resolve('index.html'), 'utf8');
   const readmeSource = readFileSync(resolve('README.md'), 'utf8');
   const generatorSource = readFileSync(resolve('scripts/generate-social-assets.mjs'), 'utf8');

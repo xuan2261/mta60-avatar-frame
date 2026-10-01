@@ -13,7 +13,8 @@
 <meta property="og:url" content="https://xuan2261.github.io/mta60-avatar-frame/" />
 <meta property="og:site_name" content="Khung ảnh MTA 60 năm" />
 <meta property="og:locale" content="vi_VN" />
-<meta property="og:image" content="https://xuan2261.github.io/mta60-avatar-frame/og-image-v1.png" />
+<meta property="og:image" content="https://xuan2261.github.io/mta60-avatar-frame/og-image-v2.png" />
+<meta property="og:image:secure_url" content="https://xuan2261.github.io/mta60-avatar-frame/og-image-v2.png" />
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
@@ -21,7 +22,8 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân" />
 <meta name="twitter:description" content="Tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự." />
-<meta name="twitter:image" content="https://xuan2261.github.io/mta60-avatar-frame/og-image-v1.png" />
+<meta name="twitter:image" content="https://xuan2261.github.io/mta60-avatar-frame/og-image-v2.png" />
+<meta name="twitter:image:alt" content="Khung ảnh đại diện cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, kết nối truyền thống MTA với dấu ấn Hải quân" />
 <title>Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân</title>
 <style>
   :root{--green:#397d43;--green2:#2f6e38;--deep:#0d4a26;--gold:#d8b54a;--navy:#123d6b;--ink:#142017;--muted:#5d675f;--paper:#f4f8f4;--line:#dce7de;--shadow:0 16px 42px rgba(13,74,38,.12)}
@@ -71,6 +73,7 @@
   .share{background:#eef3f8;color:#163d66;border:1px solid #d5e0ec}
   .copy-invite{background:#f3f7ed;color:#345218;border:1px solid #dce8ca}
   .poster-share{background:#edf6ee;color:var(--deep);border:1px solid #cfe1d2}
+  .avatar-share{background:#163d66;color:#fff;border:1px solid #123452}
   .share-assets{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
   .share-assets a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:8px 12px;border-radius:12px;background:#fff;color:var(--deep);border:1px solid #dce6dd;font-size:12px;font-weight:800;text-decoration:none}
   .share-assets a:hover{background:#f5f8f5}
@@ -168,7 +171,9 @@
         <button class="primary" id="downloadJpg" type="button">Tải JPG dùng ngay</button>
         <button class="gold" id="downloadPng" type="button">Tải PNG nền trong suốt</button>
       </div>
+      <button class="avatar-share" id="shareAvatarBtn" type="button">Chia sẻ ảnh avatar đã tạo</button>
       <div class="small">JPG có nền trắng. PNG có nền trong suốt; một số trình xem có thể hiển thị vùng trong suốt thành màu đen.</div>
+      <div class="small"><b>Mẹo trên điện thoại:</b> nếu trình duyệt bên trong Facebook/Zalo không lưu hoặc chia sẻ ảnh được, hãy mở liên kết bằng Chrome/Safari rồi thử lại.</div>
       <button class="share" id="shareBtn" type="button">Chia sẻ trang tạo khung</button>
       <button class="poster-share" id="sharePosterBtn" type="button">Chia sẻ poster</button>
       <div class="invite-box">
@@ -286,6 +291,12 @@ safePreviewEl.addEventListener('change',()=>stage.classList.toggle('safe-on',saf
 function canvasBlob(type,quality){
   return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Không thể tạo tệp ảnh.')),type,quality));
 }
+function dataUrlToFile(dataUrl,fileName){
+  const [head,data]=dataUrl.split(',');
+  const mime=head.match(/data:([^;]+)/)?.[1]||'image/jpeg';
+  const bytes=Uint8Array.from(atob(data),c=>c.charCodeAt(0));
+  return new File([bytes],fileName,{type:mime});
+}
 async function download(type){
   if(!photo){setStatus('Hãy chọn ảnh trước.');photoInput.focus();return}
   const isJpg=type==='image/jpeg';
@@ -307,6 +318,24 @@ async function download(type){
 }
 document.getElementById('downloadPng').onclick=()=>download('image/png');
 document.getElementById('downloadJpg').onclick=()=>download('image/jpeg');
+document.getElementById('shareAvatarBtn').onclick=async()=>{
+  if(!photo){setStatus('Hãy chọn ảnh trước.');photoInput.focus();return}
+  try{
+    render(true);
+    const file=dataUrlToFile(canvas.toDataURL('image/jpeg',.94),'MTA60-HaiQuan-avatar.jpg');
+    render(false);
+    if(navigator.share&&navigator.canShare?.({files:[file]})){
+      await navigator.share({files:[file],title:'Ảnh đại diện MTA 60 năm',text:'Kết nối truyền thống MTA với dấu ấn Hải quân.'});
+      setStatus('Đã mở bảng chia sẻ ảnh avatar.');
+    }else{
+      await download('image/jpeg');
+      setStatus('Trình duyệt chưa hỗ trợ chia sẻ ảnh trực tiếp; đã tạo JPG để bạn sử dụng.');
+    }
+  }catch(e){
+    render(false);
+    if(e?.name!=='AbortError')setStatus('Không thể chia sẻ ảnh trực tiếp. Hãy tải JPG hoặc mở bằng Chrome/Safari.');
+  }
+};
 document.getElementById('shareBtn').onclick=async()=>{
   const data={title:'Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân',text:'Tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự.',url:PUBLIC_URL};
   try{if(navigator.share){await navigator.share(data);setStatus('Đã mở bảng chia sẻ.')}else if(navigator.clipboard&&location.protocol==='https:'){await navigator.clipboard.writeText(PUBLIC_URL);setStatus('Đã sao chép liên kết.')}else{window.prompt('Sao chép liên kết này:',PUBLIC_URL)}}catch(e){if(e?.name!=='AbortError')setStatus('Không thể chia sẻ tự động. Hãy sao chép địa chỉ trang.')}
@@ -328,9 +357,9 @@ document.getElementById('sharePosterBtn').onclick=async()=>{
   }catch(e){if(e?.name!=='AbortError')setStatus('Không thể chia sẻ poster tự động. Hãy tải poster bên dưới.')}
 };
 const INVITES={
-  staff:'Kính mời các thầy cô, cán bộ và giảng viên cùng hưởng ứng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự bằng mẫu khung ảnh đại diện cộng đồng:\n'+PUBLIC_URL+'\nChọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo.',
-  alumni:'Kính mời các anh chị cựu học viên cùng lan tỏa dấu ấn 60 năm Học viện Kỹ thuật Quân sự với mẫu khung ảnh đại diện cộng đồng:\n'+PUBLIC_URL+'\nChọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo.',
-  student:'Mời các bạn học viên, sinh viên cùng hưởng ứng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự với mẫu khung ảnh đại diện cộng đồng:\n'+PUBLIC_URL+'\nChọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo.'
+  staff:'Kính mời các thầy cô, cán bộ và giảng viên cùng hưởng ứng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự với mẫu khung cộng đồng kết nối truyền thống MTA với dấu ấn Hải quân:\n'+PUBLIC_URL+'\nChọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo.',
+  alumni:'Kính mời các anh chị cựu học viên cùng lan tỏa dấu ấn 60 năm Học viện Kỹ thuật Quân sự với mẫu khung cộng đồng kết nối truyền thống MTA với dấu ấn Hải quân:\n'+PUBLIC_URL+'\nChọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo.',
+  student:'Mời các bạn học viên, sinh viên cùng hưởng ứng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự với mẫu khung cộng đồng kết nối truyền thống MTA với dấu ấn Hải quân:\n'+PUBLIC_URL+'\nChọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo.'
 };
 document.getElementById('copyInviteBtn').onclick=async()=>{
   const invite=INVITES[inviteTemplateEl.value]||INVITES.staff;
