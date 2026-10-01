@@ -204,6 +204,8 @@ test('public source no longer exposes internal design codes and uses the naval-a
   for (const source of [indexTextSource, readmeSource, generatorSource]) {
     expect(source).not.toMatch(/PA\d+/i);
   }
-  expect(indexSource).toContain('Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · hướng đối tượng công tác ở Hải quân.');
-  expect(readmeSource).toContain('hướng đối tượng công tác ở Hải quân');
+  expect(indexSource).toContain('Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · kết nối truyền thống MTA với dấu ấn Hải quân.');
+  expect(readmeSource).toContain('kết nối truyền thống MTA với dấu ấn Hải quân');
+  expect(indexSource).not.toContain('hướng đối tượng công tác ở Hải quân');
+  expect(readmeSource).not.toContain('hướng đối tượng công tác ở Hải quân');
 });

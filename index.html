@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <meta name="theme-color" content="#2f6e38" />
 <meta name="color-scheme" content="light" />
-<meta name="description" content="Tạo ảnh đại diện cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, hướng đối tượng công tác ở Hải quân. Ảnh được xử lý ngay trên thiết bị." />
+<meta name="description" content="Tạo ảnh đại diện cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, kết nối truyền thống MTA với dấu ấn Hải quân. Ảnh được xử lý ngay trên thiết bị." />
 <link rel="canonical" href="https://xuan2261.github.io/mta60-avatar-frame/" />
-<meta property="og:title" content="Khung ảnh MTA 60 năm – hướng đối tượng công tác ở Hải quân" />
+<meta property="og:title" content="Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân" />
 <meta property="og:description" content="Chọn ảnh, căn chỉnh và tải avatar hoàn chỉnh để dùng trên Facebook hoặc Zalo." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://xuan2261.github.io/mta60-avatar-frame/" />
@@ -17,12 +17,12 @@
 <meta property="og:image:type" content="image/png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="Khung ảnh đại diện cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, hướng đối tượng công tác ở Hải quân" />
+<meta property="og:image:alt" content="Khung ảnh đại diện cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, kết nối truyền thống MTA với dấu ấn Hải quân" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Khung ảnh MTA 60 năm – hướng đối tượng công tác ở Hải quân" />
+<meta name="twitter:title" content="Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân" />
 <meta name="twitter:description" content="Tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự." />
 <meta name="twitter:image" content="https://xuan2261.github.io/mta60-avatar-frame/og-image-v1.png" />
-<title>Khung ảnh MTA 60 năm – hướng đối tượng công tác ở Hải quân</title>
+<title>Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân</title>
 <style>
   :root{--green:#397d43;--green2:#2f6e38;--deep:#0d4a26;--gold:#d8b54a;--navy:#123d6b;--ink:#142017;--muted:#5d675f;--paper:#f4f8f4;--line:#dce7de;--shadow:0 16px 42px rgba(13,74,38,.12)}
   *{box-sizing:border-box}
@@ -199,7 +199,7 @@
   </aside>
 </div>
 <footer>
-  <div>Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · hướng đối tượng công tác ở Hải quân. Đây không phải công cụ chính thức của Facebook, Zalo hoặc Học viện.</div>
+  <div>Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · kết nối truyền thống MTA với dấu ấn Hải quân. Đây không phải công cụ chính thức của Facebook, Zalo hoặc Học viện.</div>
   <address class="creator" aria-label="Thông tin người tạo và liên hệ hỗ trợ">
     <span>Người tạo: <strong>Bùi Thanh Xuân</strong></span>
     <span>·</span>
@@ -308,7 +308,7 @@ async function download(type){
 document.getElementById('downloadPng').onclick=()=>download('image/png');
 document.getElementById('downloadJpg').onclick=()=>download('image/jpeg');
 document.getElementById('shareBtn').onclick=async()=>{
-  const data={title:'Khung ảnh MTA 60 năm – hướng đối tượng công tác ở Hải quân',text:'Tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự.',url:PUBLIC_URL};
+  const data={title:'Khung ảnh MTA 60 năm – kết nối truyền thống MTA với dấu ấn Hải quân',text:'Tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự.',url:PUBLIC_URL};
   try{if(navigator.share){await navigator.share(data);setStatus('Đã mở bảng chia sẻ.')}else if(navigator.clipboard&&location.protocol==='https:'){await navigator.clipboard.writeText(PUBLIC_URL);setStatus('Đã sao chép liên kết.')}else{window.prompt('Sao chép liên kết này:',PUBLIC_URL)}}catch(e){if(e?.name!=='AbortError')setStatus('Không thể chia sẻ tự động. Hãy sao chép địa chỉ trang.')}
 };
 document.getElementById('sharePosterBtn').onclick=async()=>{

@@ -1,6 +1,6 @@
-# MTA 60 năm – Khung ảnh đại diện cộng đồng hướng đối tượng công tác ở Hải quân
+# MTA 60 năm – Khung ảnh đại diện cộng đồng kết nối truyền thống MTA với dấu ấn Hải quân
 
-Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, hướng đối tượng công tác ở Hải quân.
+Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, kết nối truyền thống MTA với dấu ấn Hải quân.
 
 **Dùng trực tiếp:** https://xuan2261.github.io/mta60-avatar-frame/
 
@@ -24,7 +24,11 @@ Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 n
 
 ### v1.1.2
 - Loại bỏ mã phương án nội bộ khỏi source, metadata, giao diện, lời mời và tên tệp tải xuống.
-- Cập nhật mô tả: “Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · hướng đối tượng công tác ở Hải quân”.
+- Cập nhật mô tả: “Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · kết nối truyền thống MTA với dấu ấn Hải quân”.
+
+### v1.1.3
+- Chuẩn hóa thông điệp công khai theo hướng trang trọng hơn: “kết nối truyền thống MTA với dấu ấn Hải quân”.
+- Đồng bộ nội dung trên website, metadata, README và GitHub repository description.
 
 ## Quyền riêng tư
 Ảnh cá nhân được xử lý ngay trong trình duyệt bằng Canvas; trang tĩnh không tải ảnh người dùng lên máy chủ.
