@@ -126,20 +126,49 @@ test('social metadata, share assets and invite copy are wired', async ({ page })
   await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', '630');
   await expect(page.locator('.share-assets a[href="share-qr-v1.png"]')).toBeVisible();
   await expect(page.locator('.share-assets a[href="share-poster-v1.png"]')).toBeVisible();
+  await expect(page.locator('#showQrBtn')).toBeVisible();
+  await expect(page.locator('#sharePosterBtn')).toBeVisible();
+  await expect(page.locator('#inviteTemplate option')).toHaveCount(3);
 
   await page.evaluate(() => {
     window.__invite = '';
     window.prompt = (_message, value) => { window.__invite = value; return value; };
   });
+  await page.locator('#inviteTemplate').selectOption('alumni');
   await page.locator('#copyInviteBtn').click();
   const invite = await page.evaluate(() => window.__invite);
-  expect(invite).toContain('kỷ niệm 60 năm Học viện Kỹ thuật Quân sự');
+  expect(invite).toContain('60 năm Học viện Kỹ thuật Quân sự');
+  expect(invite).toContain('cựu học viên');
   expect(invite).toContain('https://xuan2261.github.io/mta60-avatar-frame/');
 
   await page.evaluate(() => { window.__invite = ''; });
   await page.locator('#shareBtn').click();
   const sharedUrl = await page.evaluate(() => window.__invite);
   expect(sharedUrl).toBe('https://xuan2261.github.io/mta60-avatar-frame/');
+});
+
+test('QR dialog opens, closes, and poster sharing uses a file when supported', async ({ page }) => {
+  await openApp(page);
+  await page.locator('#showQrBtn').click();
+  await expect(page.locator('#qrDialog')).toHaveJSProperty('open', true);
+  await expect(page.locator('#qrDialog img[src="share-qr-v1.png"]')).toBeVisible();
+  await page.locator('#closeQrBtn').click();
+  await expect(page.locator('#qrDialog')).toHaveJSProperty('open', false);
+
+  await page.evaluate(() => {
+    posterFile = new File([new Blob(['poster'], { type: 'image/png' })], 'MTA60-PA17C-poster.png', { type: 'image/png' });
+    window.__sharedPoster = null;
+    Object.defineProperty(navigator, 'canShare', { configurable: true, value: data => !!data?.files?.length });
+    Object.defineProperty(navigator, 'share', { configurable: true, value: async data => { window.__sharedPoster = { title: data.title, text: data.text, fileName: data.files?.[0]?.name, fileType: data.files?.[0]?.type }; } });
+  });
+  await page.locator('#sharePosterBtn').click();
+  const shared = await page.evaluate(() => window.__sharedPoster);
+  expect(shared).toEqual({
+    title: 'MTA 60 năm – PA17-C',
+    text: 'Mời mọi người tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự.',
+    fileName: 'MTA60-PA17C-poster.png',
+    fileType: 'image/png',
+  });
 });
 
 test('generated share images have the locked dimensions', async ({ page }) => {
