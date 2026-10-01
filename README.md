@@ -1,11 +1,11 @@
-# MTA 60 năm – PA17-C Avatar Frame
+# MTA 60 năm – Khung ảnh đại diện cộng đồng hướng đối tượng công tác ở Hải quân
 
-Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 năm Học viện Kỹ thuật Quân sự.
+Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 năm Học viện Kỹ thuật Quân sự, hướng đối tượng công tác ở Hải quân.
 
 **Dùng trực tiếp:** https://xuan2261.github.io/mta60-avatar-frame/
 
 ## Release 1.0
-- Ghép ảnh trong khung PA17-C và giới hạn ảnh đúng vùng aperture.
+- Ghép ảnh trong khung kỷ niệm và giới hạn ảnh đúng vùng aperture.
 - Kéo, zoom, xoay, căn giữa và mô phỏng crop tròn avatar.
 - Xuất JPG 2048×2048 nền trắng hoặc PNG nền trong suốt.
 - Chia sẻ trang, sao chép lời mời + link, tải QR và poster chia sẻ.
@@ -20,7 +20,11 @@ Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 n
 
 ### v1.1.1
 - Poster chia sẻ bỏ hoàn toàn thông tin người tạo/liên hệ.
-- Poster bỏ mã phương án PA17-C; chỉ giữ thông điệp kỷ niệm 60 năm.
+- Poster chỉ giữ thông điệp kỷ niệm 60 năm, không hiển thị mã phương án nội bộ.
+
+### v1.1.2
+- Loại bỏ mã phương án nội bộ khỏi source, metadata, giao diện, lời mời và tên tệp tải xuống.
+- Cập nhật mô tả: “Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · hướng đối tượng công tác ở Hải quân”.
 
 ## Quyền riêng tư
 Ảnh cá nhân được xử lý ngay trong trình duyệt bằng Canvas; trang tĩnh không tải ảnh người dùng lên máy chủ.

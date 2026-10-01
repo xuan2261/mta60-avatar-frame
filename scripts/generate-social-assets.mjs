@@ -37,7 +37,7 @@ h1{font-size:58px;line-height:1.02;letter-spacing:-.035em;margin:0 0 18px;max-wi
 .framebox:before{content:"";position:absolute;width:390px;height:390px;border-radius:50%;background:rgba(255,255,255,.95);box-shadow:0 25px 70px rgba(0,0,0,.28)}
 .frame{position:relative;width:456px;height:456px;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.28))}
 .creator{position:absolute;right:62px;bottom:38px;font-size:14px;color:rgba(255,255,255,.68)}
-</style></head><body><div class="wrap"><section><div class="kicker">Kỷ niệm 60 năm · 1966–2026</div><h1>Học viện Kỹ thuật Quân sự</h1><div class="years">28/10/1966 — 28/10/2026</div><p class="desc">Tạo ảnh đại diện PA17-C và cùng lan tỏa dấu ấn 60 năm.</p><div class="cta">TẠO ẢNH ĐẠI DIỆN</div></section><div class="framebox"><img class="frame" src="${frameSrc}" alt=""></div><div class="url">xuan2261.github.io/mta60-avatar-frame</div><div class="creator">Bùi Thanh Xuân · fb.com/xuan2261</div></div></body></html>`;
+</style></head><body><div class="wrap"><section><div class="kicker">Kỷ niệm 60 năm · 1966–2026</div><h1>Học viện Kỹ thuật Quân sự</h1><div class="years">28/10/1966 — 28/10/2026</div><p class="desc">Tạo ảnh đại diện cộng đồng và cùng lan tỏa dấu ấn 60 năm.</p><div class="cta">TẠO ẢNH ĐẠI DIỆN</div></section><div class="framebox"><img class="frame" src="${frameSrc}" alt=""></div><div class="url">xuan2261.github.io/mta60-avatar-frame</div><div class="creator">Bùi Thanh Xuân · fb.com/xuan2261</div></div></body></html>`;
 
 const posterHtml = `<!doctype html><html><head><meta charset="utf-8"><style>${commonCss}
 body{background:radial-gradient(circle at 50% 0,#4a8b52 0,#2f6e38 36%,#0d4a26 100%)}

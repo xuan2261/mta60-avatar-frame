@@ -156,7 +156,7 @@ test('QR dialog opens, closes, and poster sharing uses a file when supported', a
   await expect(page.locator('#qrDialog')).toHaveJSProperty('open', false);
 
   await page.evaluate(() => {
-    posterFile = new File([new Blob(['poster'], { type: 'image/png' })], 'MTA60-PA17C-poster.png', { type: 'image/png' });
+    posterFile = new File([new Blob(['poster'], { type: 'image/png' })], 'MTA60-HaiQuan-poster.png', { type: 'image/png' });
     window.__sharedPoster = null;
     Object.defineProperty(navigator, 'canShare', { configurable: true, value: data => !!data?.files?.length });
     Object.defineProperty(navigator, 'share', { configurable: true, value: async data => { window.__sharedPoster = { title: data.title, text: data.text, fileName: data.files?.[0]?.name, fileType: data.files?.[0]?.type }; } });
@@ -164,9 +164,9 @@ test('QR dialog opens, closes, and poster sharing uses a file when supported', a
   await page.locator('#sharePosterBtn').click();
   const shared = await page.evaluate(() => window.__sharedPoster);
   expect(shared).toEqual({
-    title: 'MTA 60 năm – PA17-C',
+    title: 'MTA 60 năm – Dấu ấn Hải quân',
     text: 'Mời mọi người tạo ảnh đại diện kỷ niệm 60 năm Học viện Kỹ thuật Quân sự.',
-    fileName: 'MTA60-PA17C-poster.png',
+    fileName: 'MTA60-HaiQuan-poster.png',
     fileType: 'image/png',
   });
 });
@@ -181,17 +181,29 @@ test('generated share images have the locked dimensions', async ({ page }) => {
   expect(await readSize(posterImagePath)).toEqual([1080, 1350]);
 });
 
-test('poster source omits creator contact and PA17 code', async () => {
+test('poster source omits creator contact and internal design codes', async () => {
   const generator = readFileSync(resolve('scripts/generate-social-assets.mjs'), 'utf8');
   const posterStart = generator.indexOf('const posterHtml');
   const posterEnd = generator.indexOf('const browser', posterStart);
   expect(posterStart).toBeGreaterThan(-1);
   expect(posterEnd).toBeGreaterThan(posterStart);
   const posterSource = generator.slice(posterStart, posterEnd);
-  expect(posterSource).not.toContain('PA17-C');
+  expect(posterSource).not.toMatch(/PA\d+/i);
   expect(posterSource).not.toContain('Người tạo:');
   expect(posterSource).not.toContain('Bùi Thanh Xuân');
   expect(posterSource).not.toContain('fb.com/xuan2261');
   expect(posterSource).not.toContain('0374 037 026');
   expect(posterSource).toContain('Kỷ niệm 60 năm · 1966–2026');
+});
+
+test('public source no longer exposes internal design codes and uses the naval-audience description', async () => {
+  const indexSource = readFileSync(resolve('index.html'), 'utf8');
+  const readmeSource = readFileSync(resolve('README.md'), 'utf8');
+  const generatorSource = readFileSync(resolve('scripts/generate-social-assets.mjs'), 'utf8');
+  const indexTextSource = indexSource.replace(/frame\.src='data:image\/webp;base64,[^']+'/g, "frame.src='<embedded-frame>'");
+  for (const source of [indexTextSource, readmeSource, generatorSource]) {
+    expect(source).not.toMatch(/PA\d+/i);
+  }
+  expect(indexSource).toContain('Mẫu khung cộng đồng kỷ niệm 60 năm Học viện Kỹ thuật Quân sự · hướng đối tượng công tác ở Hải quân.');
+  expect(readmeSource).toContain('hướng đối tượng công tác ở Hải quân');
 });
