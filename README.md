@@ -18,6 +18,10 @@ Công cụ tạo ảnh đại diện cộng đồng nhân dịp kỷ niệm 60 n
 - Ba mẫu lời mời: cán bộ/giảng viên, cựu học viên, học viên/sinh viên.
 - Regression suite kiểm tra QR modal, mẫu lời mời và luồng chia sẻ poster.
 
+### v1.1.1
+- Poster chia sẻ bỏ hoàn toàn thông tin người tạo/liên hệ.
+- Poster bỏ mã phương án PA17-C; chỉ giữ thông điệp kỷ niệm 60 năm.
+
 ## Quyền riêng tư
 Ảnh cá nhân được xử lý ngay trong trình duyệt bằng Canvas; trang tĩnh không tải ảnh người dùng lên máy chủ.
 

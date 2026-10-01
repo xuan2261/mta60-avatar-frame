@@ -50,8 +50,7 @@ h1{font-size:56px;line-height:1.08;letter-spacing:-.03em;margin:16px 0 10px;max-
 .qrbox{background:#fff;padding:18px;border-radius:26px;box-shadow:0 18px 42px rgba(0,0,0,.22)}
 .qr{width:286px;height:286px;display:block}.qrlabel{color:#174f31;font-size:18px;font-weight:900;margin-top:10px}
 .steps{font-size:23px;font-weight:750;letter-spacing:.01em;margin:0 0 16px}.url{font-size:20px;color:#f4d16a;font-weight:850;margin-top:4px}
-.contact{position:absolute;left:0;right:0;bottom:28px;font-size:16px;color:rgba(255,255,255,.72)}
-</style></head><body><div class="wrap"><div class="kicker">PA17-C · Kỷ niệm 60 năm MTA</div><h1>Học viện Kỹ thuật Quân sự</h1><p class="sub">28/10/1966 — 28/10/2026 · Trí tuệ tỏa sáng</p><div class="hero"><img class="frame" src="${frameSrc}" alt=""><div class="qrbox"><img class="qr" src="${qrDataUrl}" alt=""><div class="qrlabel">QUÉT ĐỂ TẠO AVATAR</div></div></div><div class="steps">Chọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo</div><div class="url">${SITE_URL}</div><div class="contact">Người tạo: Bùi Thanh Xuân · fb.com/xuan2261 · 0374 037 026</div></div></body></html>`;
+ </style></head><body><div class="wrap"><div class="kicker">Kỷ niệm 60 năm · 1966–2026</div><h1>Học viện Kỹ thuật Quân sự</h1><p class="sub">28/10/1966 — 28/10/2026 · Trí tuệ tỏa sáng</p><div class="hero"><img class="frame" src="${frameSrc}" alt=""><div class="qrbox"><img class="qr" src="${qrDataUrl}" alt=""><div class="qrlabel">QUÉT ĐỂ TẠO AVATAR</div></div></div><div class="steps">Chọn ảnh → căn chỉnh → tải về → đặt làm avatar Facebook/Zalo</div><div class="url">${SITE_URL}</div></div></body></html>`;
 
 const browser = await chromium.launch({ headless: true });
 try {

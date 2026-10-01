@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const pageUrl = pathToFileURL(resolve('index.html')).href;
 const ogImagePath = resolve('og-image-v1.png');
@@ -179,4 +179,19 @@ test('generated share images have the locked dimensions', async ({ page }) => {
   expect(await readSize(ogImagePath)).toEqual([1200, 630]);
   expect(await readSize(qrImagePath)).toEqual([900, 900]);
   expect(await readSize(posterImagePath)).toEqual([1080, 1350]);
+});
+
+test('poster source omits creator contact and PA17 code', async () => {
+  const generator = readFileSync(resolve('scripts/generate-social-assets.mjs'), 'utf8');
+  const posterStart = generator.indexOf('const posterHtml');
+  const posterEnd = generator.indexOf('const browser', posterStart);
+  expect(posterStart).toBeGreaterThan(-1);
+  expect(posterEnd).toBeGreaterThan(posterStart);
+  const posterSource = generator.slice(posterStart, posterEnd);
+  expect(posterSource).not.toContain('PA17-C');
+  expect(posterSource).not.toContain('Người tạo:');
+  expect(posterSource).not.toContain('Bùi Thanh Xuân');
+  expect(posterSource).not.toContain('fb.com/xuan2261');
+  expect(posterSource).not.toContain('0374 037 026');
+  expect(posterSource).toContain('Kỷ niệm 60 năm · 1966–2026');
 });
