@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
+import { existsSync } from 'node:fs';
 
 const pageUrl = pathToFileURL(resolve('index.html')).href;
+const ogImagePath = resolve('og-image-v1.png');
+const qrImagePath = resolve('share-qr-v1.png');
+const posterImagePath = resolve('share-poster-v1.png');
 
 async function openApp(page) {
   await page.goto(pageUrl);
@@ -107,4 +111,43 @@ test('mobile layout has no horizontal overflow', async ({ page }) => {
   expect(dimensions.scrollWidth).toBeLessThanOrEqual(dimensions.width + 1);
   await expect(page.locator('.safe-toggle')).toBeVisible();
   await expect(page.locator('.creator')).toBeVisible();
+});
+
+test('social metadata, share assets and invite copy are wired', async ({ page }) => {
+  expect(existsSync(ogImagePath)).toBe(true);
+  expect(existsSync(qrImagePath)).toBe(true);
+  expect(existsSync(posterImagePath)).toBe(true);
+  await openApp(page);
+
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://xuan2261.github.io/mta60-avatar-frame/');
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://xuan2261.github.io/mta60-avatar-frame/');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://xuan2261.github.io/mta60-avatar-frame/og-image-v1.png');
+  await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute('content', '1200');
+  await expect(page.locator('meta[property="og:image:height"]')).toHaveAttribute('content', '630');
+  await expect(page.locator('.share-assets a[href="share-qr-v1.png"]')).toBeVisible();
+  await expect(page.locator('.share-assets a[href="share-poster-v1.png"]')).toBeVisible();
+
+  await page.evaluate(() => {
+    window.__invite = '';
+    window.prompt = (_message, value) => { window.__invite = value; return value; };
+  });
+  await page.locator('#copyInviteBtn').click();
+  const invite = await page.evaluate(() => window.__invite);
+  expect(invite).toContain('kỷ niệm 60 năm Học viện Kỹ thuật Quân sự');
+  expect(invite).toContain('https://xuan2261.github.io/mta60-avatar-frame/');
+
+  await page.evaluate(() => { window.__invite = ''; });
+  await page.locator('#shareBtn').click();
+  const sharedUrl = await page.evaluate(() => window.__invite);
+  expect(sharedUrl).toBe('https://xuan2261.github.io/mta60-avatar-frame/');
+});
+
+test('generated share images have the locked dimensions', async ({ page }) => {
+  const readSize = async (path) => {
+    await page.goto(pathToFileURL(path).href);
+    return page.locator('img').evaluate(img => [img.naturalWidth, img.naturalHeight]);
+  };
+  expect(await readSize(ogImagePath)).toEqual([1200, 630]);
+  expect(await readSize(qrImagePath)).toEqual([900, 900]);
+  expect(await readSize(posterImagePath)).toEqual([1080, 1350]);
 });

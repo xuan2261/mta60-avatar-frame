@@ -23,5 +23,7 @@ jobs:
         run: npm ci
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Generate social assets
+        run: npm run assets
       - name: Run regression tests
         run: npm test

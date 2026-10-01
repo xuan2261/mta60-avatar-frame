@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "assets": "node scripts/generate-social-assets.mjs",
     "test": "playwright test"
   },
   "devDependencies": {
-    "@playwright/test": "1.63.0"
+    "@playwright/test": "1.63.0",
+    "qrcode": "^1.5.4"
   }
 }
